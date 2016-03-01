@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>Controlador:<%= controller_name %></p>
+<p>Accion:<%= action_name %></p>
+
+<p>
+  <strong>Nom:</strong>
+  <%= @trampa.nom %>
+</p>
+
+<p>
+  <strong>Tipus:</strong>
+  <%= @trampa.tipus %>
+</p>
+
+<p>
+  <strong>Ubicacio:</strong>
+  <%= @trampa.ubicacio %>
+</p>
+
+<p>
+  <strong>Recompte:</strong>
+  <%= @trampa.recompte %>
+</p>
+
+<p>
+  <strong>Estat ok:</strong>
+  <%= @trampa.estat_ok %>
+</p>
+
+<p>
+  <strong>Observacions:</strong>
+  <%= @trampa.observacions %>
+</p>
+<!--
+<p>
+  <strong>Audit:</strong>
+  <%= @trampa.audit %>
+</p>
+-->
+<p>
+  <strong>Foto:</strong>
+  <%= image_tag @trampa.foto, :style => 'width:350px;height:350px;' %>
+</p>
+
+
+
+<%= link_to 'Editar', edit_trampa_path(@trampa), :class=>'btn btn-primary btn-block' %> </br>
+<%= link_to 'Enrera', trampas_path, :class=>'btn btn-primary btn-block' %>

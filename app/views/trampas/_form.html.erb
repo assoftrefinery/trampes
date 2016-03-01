@@ -1,0 +1,62 @@
+<%= form_for(@trampa) do |f| %>
+  <% if @trampa.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@trampa.errors.count, "error") %> ha impedit que aquesta Trampa es guardi: </h2>
+
+      <ul>
+      <% @trampa.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <p>Controlador:<%= controller_name %></p>
+    <p>Accion:<%= action_name %></p>
+
+  <div class="field">
+    <%= f.label :nom %><br>
+    <%= f.text_field :nom %>
+  </div>
+  <div class="field">
+    <%= f.label :tipus %><br>
+   <%=  f.select(:tipus, Trampa::TIPUS) %>
+  </div>
+    <div class="field">
+      <%= f.label :ubicacio %><br>
+      <%=  f.select(:ubicacio, Trampa::UBICACIO) %>
+    </div>
+  <div class="field">
+    <%= f.label :recompte %><br>
+    <%= f.number_field :recompte %>
+  </div>
+  <div class="field">
+    <%= f.label :estat_ok %><br>
+    <%= f.check_box :estat_ok %>
+  </div>
+    <div class="field">
+      <%= f.label :observacions %><br>
+      <%= f.text_area :observacions %>
+    </div>
+  <!-- <div class="field">
+    <%= f.label :audit_id %><br>
+    <%= f.text_field :audit_id %>
+  </div> -->
+
+    <p>
+      <strong>Foto:</strong>
+      <%= f.file_field :foto, :accept =>'image/*' %>
+    </p>
+
+   <!-- <input type="file" accept="image/*" id="capture" capture="camera"> -->
+
+
+    </br>
+
+   <!-- <input type="hidden" value="1" name="trampa[parent_trampa_id]" id="trampa_parent_trampa_id"> -->
+
+  <div class="actions">
+    <%= f.submit :class=>'btn btn-primary btn-block'%>
+  </div>
+
+<% end %>

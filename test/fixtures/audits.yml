@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  dataaudit: 2016-02-11
+  observacions: MyText
+
+two:
+  dataaudit: 2016-02-11
+  observacions: MyText

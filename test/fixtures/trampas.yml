@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nom: MyString
+  tipus: MyString
+  recompte: 1
+  estat_ok: false
+  audit_id: 
+
+two:
+  nom: MyString
+  tipus: MyString
+  recompte: 1
+  estat_ok: false
+  audit_id: 
