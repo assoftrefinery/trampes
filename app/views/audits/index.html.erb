@@ -16,11 +16,11 @@
       <tr>
         <td><%= audit.dataaudit.strftime('%d-%m-%Y') %> / <%= audit.created_at.strftime('%H:%M')%> <b>Propera revisio:</b> <%= (audit.created_at + 2.months).strftime('%d-%m-%Y') %> </td>
         <td><%= audit.observacions %></td>
-        <td><%= link_to 'Veure', audit %></td>
+        <td><%= link_to 'Veure', audit, :class=>'btn btn-primary btn-block' %></td>
 
-         <td><%= link_to 'Editar capçalera', edit_audit_path(audit) %></td>
+         <td><%= link_to 'Editar capçalera', edit_audit_path(audit), :class=>'btn btn-warning btn-block' %></td>
 
-        <td><%= link_to 'Esborrar', audit, method: :delete, data: { confirm: 'Esborrar auditoria y trampes relacionades. Estas segur?' } %></td>
+        <td><%= link_to 'Esborrar', audit, method: :delete, data: { confirm: 'Esborrar auditoria y trampes relacionades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td>
       </tr>
     <% end.empty? %>
     No hi han auditories.
