@@ -1,0 +1,138 @@
+Listar los tipos de campo de un registro
+
+SQL
+
+SELECT product_fields.field_type
+FROM controls JOIN product_types
+ON controls.product_type_id = product_types.id
+JOIN product_fields
+ON product_fields.product_type_id = product_types.id
+WHERE controls.id = 23
+
+Controller
+
+@tipo = ProductField.find_by_sql("SELECT product_fields.field_type
+            FROM controls JOIN product_types
+            ON controls.product_type_id = product_types.id
+            JOIN product_fields
+            ON product_fields.product_type_id = product_types.id
+            WHERE controls.id = #{params[:id]}")
+			
+View
+
+<% @tipo.each do |tipo| %>
+
+    <p><%= tipo.field_type %></p>
+	
+    <% if tipo == "check_box" %>
+        <p> Es un check_box </p>
+    <% end %>
+<% end %>
+
+-------------------------------------------------------------------
+
+<% @control.properties.each do |name, value| %>
+    <p>
+      <b><%= name.humanize %>:</b>
+        <% if value == '1' || value == '0' %>
+          <%= check_box_tag( value, value)  %>
+        <% else %>
+          <%= value %>
+        <% end %>
+    </p>
+<% end %>
+
+-------------------------------------------------------------------
+
+TABLA
+
+<table>
+  <tr>
+    <td>C1</td>
+    <td>C2</td> 
+    <td>C3</td>
+  </tr>
+  <tr>
+    <td>C1</td>
+    <td>C2</td> 
+    <td>C3</td>
+  </tr>
+</table>
+
+-------------------------------------------------------------------
+
+ <table class="table table-hover">
+  <tr>
+<% @control.properties.each do |name, value| %>
+    <p>
+   <td>   <b><%= name.humanize %>:</b> </td>
+              <% if value == '1' %>
+   <td>            <%= check_box_tag value, value, true %> </td>
+                  <% elsif value == '0' %>
+            <td>                 <%= check_box_tag value, value, false %> </td>
+              <% else %>
+            <td>                  <%= value %></td>
+              <% end %>
+    </p>
+        </tr>
+<% end %>
+</table>
+
+
+-------------------------------------------------------------------
+Miercoles
+
+<!-- ciclar entre los diferentes valores. Hay una lista de valores y una lista de campos, y se integran -->
+ <table class="table table-hover">
+  <tr>
+      <% @control.properties.each do |name, value| %>
+          
+      <td> <b><%= name.humanize %>:</b> </td>
+      <td><%= value %></td>
+  </tr>
+<% end %>
+</table>
+
+-----------------------------------------------------------------------
+
+<!-- ciclar entre tipos para determinar el tipo de control (check_box? , radio? , numeric? )
+<% @tipo.each do |tipo| %>
+    <% if tipo.field_type == "check_box" %>
+      <!--   <p> Es un check_box </p> -->
+    <% end %>
+<% end %>
+
+<!-- ciclar entre los diferentes valores. Hay una lista de valores y una lista de campos, y se integran -->
+ <table class="table table-hover">
+  <tr>
+      <% @control.properties.each do |name, value| %>
+        <% @tipo.each do |tipo| %>
+            <% if tipo.field_type == "check_box" %>
+             <p> Es un check_box con valor= <%= value %></p>
+            <% end %>
+        <% end %>
+      <td> <b><%= name.humanize %>:</b> </td>
+      <td><%= value %></td>
+  </tr>
+<% end %>
+</table>
+
+<br>
+<% @control.product_type.fields.each do |field| %>
+   <!-- <p><%= field.field_type  %></p> -->
+<% end %>
+<br>
+
+-----------------------------------------------------------------------
+
+Descartado en Controls.Controller , action SHOW
+
+#@tipo = ProductField.find_by_sql("SELECT * FROM product_fields WHERE product_type_id = #{params[:product_type_id]}")
+    #@tipo = ProductField.find_by_sql("SELECT DISTINCT product_fields.field_type FROM product_fields INNER JOIN product_types ON product_fields.product_type_id = #{params[:product_type_id]}")
+    #@tipo = ProductField.includes(:product_type).where(:product_type_id => params[:product_type_id])
+    #@tipo = ProductField.select("*").joins(:product_type).where(:product_type => ProductField.find_by_sql("SELECT id FROM product_types WHERE product_types.id = #{params[:id]}"))
+    #@tipo = ProductField.select("*").joins(:product_type).first
+
+    #@tipo = ProductType.joins(:product_fields,:product_types).where("product_fields.product_type_id=product_types.id")
+	
+-----------------------------------------------------------------------

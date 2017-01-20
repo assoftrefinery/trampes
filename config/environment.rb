@@ -8,6 +8,5 @@ require File.expand_path('../application', __FILE__)
 #requiere reiniciar server
 Time::DATE_FORMATS[:databona] = '%d-%m-%Y'
 
-
 # Initialize the Rails application.
 Rails.application.initialize!

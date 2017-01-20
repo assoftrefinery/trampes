@@ -1,0 +1,181 @@
+<script>
+  $( function() {
+    $( "#accordion" ).accordion({
+      collapsible: true,
+      active: false
+    });
+  } );
+</script>
+
+<p id="notice"><%= notice %></p>
+
+<div class ="well">
+  <table class="table">
+    <tbody>
+    <tr>
+      <td>
+        <p>
+          <strong>Nom:</strong>
+        </p>
+      </td>
+      <td>
+        <p>
+          <%= @control.nom %>
+        </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>
+          <strong>Data Control:</strong>
+        </p>
+      </td>
+      <td>
+        <p>
+          <%= @control.datacontrol.strftime('%d-%m-%Y') %> / <%= @control.datacontrol.strftime('%H:%M')%>
+        </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>
+          <strong>Operari:</strong>
+        </p>
+      </td>
+      <td>
+        <p>
+          <%= @control.operari %>
+        </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>
+          <strong>Freqüència:</strong>
+        </p>
+      </td>
+      <td>
+        <p>
+          <% if @control.frecuencia.nil? || @control.frecuencia == 'Selecciona frecuencia' %>
+              Freqüència no establerta
+          <% else %>
+              <%= @control.frecuencia %>
+          <% end %>
+        </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>
+          <strong>Proper control:</strong>
+        </p>
+      </td>
+      <td>
+        <p>
+          <% if @control.dataproximcontrol.nil? %>
+              No informat
+          <% else %>
+              <%= @control.dataproximcontrol.strftime('%d-%m-%Y') %>
+          <% end %>
+        </p>
+      </td>
+    </tr>
+
+
+    <tr>
+      <td>
+        <p>
+          <strong>Fabricació:</strong>
+        </p>
+      </td>
+      <td>
+        <p>
+          <% if @control.fabricacio.nil? %>
+              Sense fabricació asignada
+          <% else %>
+              <%= @control.fabricacio %>
+          <% end %>
+        </p>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</div>
+
+<br>
+
+<!-- ciclar entre los diferentes valores. Hay una lista de valores y una lista de campos, y se integran -->
+<% if @control.product_type.nil? %>
+    <p>Error: Tipus de control per aquest control no existeix. ID Tipus: <%= @control.product_type_id %></p>
+<% else %>
+    <table class="table table-striped">
+      <% @control.product_type.fields.each do |field1| %>
+          <tr>
+            <td><b><%= field1.name %></b></td>
+
+            <% @campo = field1 %>
+
+            <% if field1.field_type == 'check_box' %>
+
+                <% @campo = field1 %>
+
+                <% @control.properties.each do |name, value| %>
+                    <% @valor = value %>
+                    <% if @campo != nil %>
+                        <% if @campo.name == name %>
+                            <% if value == '1' %>
+                                <td><div><%= check_box_tag(nil, 1, true, options = {:disabled => true}) %></div></td>
+                            <% else %>
+                                <td><div><%= check_box_tag(nil, 1, false, options = {:disabled => true}) %></div></td>
+                            <% end %>
+                        <% else %>
+                            <% @valor = value %>
+                        <% end %>
+                    <% else %>
+                        <% if @campo.name != name %>
+                            <td><%= value %></td>
+                        <% end %>
+                    <% end %>
+                <% end %>
+            <% else %>
+                <% @control.properties.each do |name, value| %>
+                    <% if @campo.name == name %>
+                        <td> <%= value %> </td>
+                    <% end %>
+                <% end %>
+            <% end %>
+
+          </tr>
+      <% end %>
+    </table>
+<% end %>
+
+<br>
+
+<br>
+<% if @control.product_type.nil? %>
+<% else %>
+    <%= link_to 'Editar', edit_control_path(@control), :class=>'btn btn-primary btn-block' %>
+    <br>
+<% end %>
+<br>
+<%= link_to 'Duplicar Control', {:controller => "controls", :action => "duplicar_registro", :id => @control.id }, :class=>'btn btn-primary btn-block' %>
+<br>
+<hr>
+<%= link_to 'Anar a Plànning de Controls', controls_planning_path, :class=>'btn btn-primary btn-block' %>
+<br>
+<%= link_to 'Anar a Històric i Gestió de Controls', controls_path, :class=>'btn btn-primary btn-block' %>
+<br>
+<div id="accordion">
+  <h3 class="well well-sm">Ajuda</h3>
+  <div>
+    <p>
+      Ajuda contextual
+    </p>
+  </div>
+</div>

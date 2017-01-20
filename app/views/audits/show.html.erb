@@ -1,4 +1,5 @@
 <p id="notice"><%= notice %></p>
+
 <p>
   <strong>Data auditoria:</strong>
   <%= @audit.dataaudit %>
@@ -7,17 +8,19 @@
   <strong>Observacions:</strong>
   <%= @audit.observacions %>
 </p>
-<table class="table table-hover">
+<table class="table table-condensed">
   <thead>
   <tr>
     <th>Nom</th>
     <th>Tipus</th>
     <th>Ubicacio</th>
+    <th>Descripcio</th>
+    <th>Foto Inicial</th>
     <th>Recompte</th>
     <th>Estat Ok</th>
     <th>Observacions</th>
     <!-- <th>Auditoria</th> -->
-    <th>Foto</th>
+    <th>Foto Auditoria</th>
     <th colspan="3"></th>
   </tr>
   </thead>
@@ -28,11 +31,15 @@
         <td><%= trampa.nom %></td>
         <td><%= trampa.tipus %></td>
         <td><%= trampa.ubicacio %></td>
+        <td><%= trampa.descripcio %></td>
+        <td><%= image_tag trampa.fotobase, :style => 'width:175px;height:75px;'%></td>
         <td align="center"><%= trampa.recompte %></td>
         <td><%= check_box "trampa", "estat_ok", {:checked => trampa.estat_ok, :disabled => true}%></td>
         <td><%= trampa.observacions %></td>
+
       <!--  <td><%= trampa.audit.id %></td> -->
-        <td> <%= image_tag trampa.foto, :style => 'width:350px;height:150px;' %></td>
+
+        <td> <%= image_tag trampa.foto, :style => 'width:175px;height:75px;'%></td>
 
         <!-- <td><%= link_to 'Veure trampa', trampa %></td> -->
 

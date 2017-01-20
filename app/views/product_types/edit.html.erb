@@ -1,0 +1,30 @@
+<h1 class="jumbotron">Editar tipus de Control</h1>
+
+<%= render 'form' %>
+</br>
+<%= link_to 'Veure', @product_type, :class=>'btn btn-primary btn-block' %>
+</br>
+</br>
+<%= link_to 'Enrera', product_types_path, :class=>'btn btn-primary btn-block' %>
+
+
+
+
+<script>
+  /*Esto lo he tenido que sacar de 'productypes.js.coffee' porque no se disparaba. Ver que ·$·" pasa*/
+  $(document).on('click', 'form .remove_fields', function(event) {
+    $(this).prev('input[type=hidden]').val('1');
+    //$(this).closest('fieldset').hide();
+    $(this).parent().hide();
+    return event.preventDefault();
+    //alert("removes");
+  });
+
+  $(document).on('click', 'form .add_fields', function(event) {
+    var regexp, time;
+    time = new Date().getTime();
+    regexp = new RegExp($(this).data('id'), 'g');
+    $(this).before($(this).data('fields').replace(regexp, time));
+    return event.preventDefault();
+  });
+</script>

@@ -1,8 +1,10 @@
+<script src="/assets/ap-scroll-top-codigo.js"></script>
+
 <p id="notice"><%= notice %></p>
 
-<h1 class="jumbotron">Històric de auditories</h1>
+<h1 class="jumbotron">Històric d'auditories de Trampes</h1>
 
-<table class="table table-hover">
+<table class="table table-condensed">
   <thead>
     <tr>
       <th>Data</th>
@@ -28,9 +30,20 @@
   </tbody>
 </table>
 
-</br>
+<br>
 
-<%= link_to 'Nova auditoria', new_audit_path, :class=>'btn btn-primary btn-block' %>
+<%= paginate @audits %>
+<%= page_entries_info @audits %>
+
+<br>
+
+<div>
+<%= link_to 'Nova auditoria de Trampes', new_audit_path, :class=>'btn btn-primary btn-block' %>
+<%= link_to 'Plantilles de Trampes', trampas_path, :class=>'btn btn-primary btn-block' %>
+  </div>
+</br>
+<%= link_to 'Enrera', '\home\menu_auditories', :class=>'btn btn-primary btn-block' %>
+<%= link_to 'Menu Principal', home_principal_path, :class=>'btn btn-primary btn-block' %>
 
 </br>
 <!--

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nom: MyString
+  datacontrol: 2016-04-08 12:08:52
+  operari: MyString
+
+two:
+  nom: MyString
+  datacontrol: 2016-04-08 12:08:52
+  operari: MyString

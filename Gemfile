@@ -36,6 +36,14 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'carrierwave'
 gem 'mini_magick', '~> 4.3'
 
+#Paginacion 
+gem 'kaminari'
+
+#conexion SQL SERVER para Fabricaciones (de momento)
+gem 'tiny_tds'
+gem 'activerecord-sqlserver-adapter'
+gem 'ruby-odbc'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

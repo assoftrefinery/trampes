@@ -1,39 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html  lang="es">
 <head>
-  <title>Auditoria de Trampes</title>
+  <title>Qualitat</title>
+
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
 	    <%= stylesheet_link_tag "/assets/bootstrap.css" %>
 	    <link rel="stylesheet" href="/assets/bootstrap-theme.css">
+      <link rel="stylesheet" type="text/css" media="print" href="/assets/bootstrap.css">
 	    <script src="/assets/jquery.js" type="text/javascript"></script>
       <script src="/assets/jquery_ujs.js" type="text/javascript"></script>
+      <!-- <script src="/assets/jquery-1.12.3.min.js"></script> -->
       <script src="/assets/bootstrap.min.js" type="text/javascript"></script>
-      <!-- <script src="/assets/highcharts.js" type="text/javascript"></script> -->
+
+      <!-- <script   src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"   integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="   crossorigin="anonymous"></script> -->
+      <script src="/assets/jquery-ui.min.js" type="text/javascript"></script>
+      <!-- <link rel="stylesheet" type="text/css"  href=" https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css"> -->
+      <link rel="stylesheet" type="text/css"  href="/assets/jquery-ui.min.css">
+
+
+      <!-- scroll_to_top -->
+      <%= stylesheet_link_tag "/assets/ap-scroll-top.min.css" %>
+      <script src="/assets/ap-scroll-top.min.js"></script>
+
+      <!-- data confirm modal -->
+      <script src="/assets/data-confirm-modal.js"></script>
+      <!-- opciones integradas en data-confirm-modal.js -->
+
       <!-- Highcharts -->
-      <%= javascript_include_tag "jquery-1.4.2.min", "rails", "highcharts" %>
+      <!-- <script src="/assets/highcharts.js" type="text/javascript"></script> -->
+      <!-- para el range selector , se ve que Highstocks ya incluye Highcharts y si ponemos los dos peta -->
+      <!--  <script src="http://code.highcharts.com/stock/highstock.js"></script> -->
 
-	    <%= javascript_include_tag 'default', 'data-turbolinks-track' => true %>
+      <%= favicon_link_tag '/assets/favicon.jpg' %>
+
+  <style>
+    /* fondo gris al pasar por encima del menu superior */
+    li:hover
+    {
+        background-color:darkgrey;
+        border-radius:5px;
+    }
+  </style>
+
+      <%= javascript_include_tag 'default', 'data-turbolinks-track' => true %>
 	    <%= csrf_meta_tags %>
-</head>
-<body>
+  <script>
 
-<div class="container" style="  margin-top: 5%;">
+  $('.alert.fade').addClass('in');
+
+  </script>
+
+</head>
+<body style="margin-top:10%;">
+
+<div class="container">
+  <%= render partial: "shared/flashmessages", flash: flash %>
   <%= yield %>
 </div>
 
-
-
-<footer style="margin-top:50%;">
+<footer style="margin-top:25%;">
   <div class="container">
-    Fran Luque, Crisolar 2016
+    Crisolar 2016
   </div>
 </footer>
-<!-- <script src="//railsgirls.com/assets/bootstrap.js"></script> -->
 
 </body>
 
-
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+
   <div class="container">
+
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="sr-only">Navegació</span>
@@ -41,13 +79,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a style="cursor:default" class="navbar-brand" href="/">Auditoria de Trampes</a>
+      <a href="#" class="navbar-left"><img src="/assets/logo_crisolar_130x45.png"></a>
+       <a style="font-weight:bold;" class="navbar-brand" href="/">Qualitat</a>
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li>				<a href="/">Inici</a></li>
-		    <li>				<a href="/audits">Històric d'auditories</a></li>
+		    <li>				<a href="/home/menu_auditories">Auditories</a></li>
+        <li>				<a href="/controls/planning">Controls</a></li>
+        <li>				<a href="#">Validacions</a></li>
+        <li>				<a style="cursor: default" href="#">Centre: R2</a></li>
         <li>				<a style="cursor: default">Data: <%= Time.now.to_s(:databona) %>|<%= Time.now.strftime('%H:%M') %></a></li>
+        <li><a style="font-weight:bold;">IP:<%= request.remote_ip %></a></li>
+        <!--<li style="float:right;"><img src="crisolarblanco.png" style="width:150px;height:50px;"></li>-->
       </ul>
     </div>
   </div>

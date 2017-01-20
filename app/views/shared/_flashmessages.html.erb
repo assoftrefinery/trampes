@@ -1,0 +1,7 @@
+<% flash.each do |type, message| %>
+    <div id="flash_notice" style="margin-top:5%;" class="alert <%= bootstrap_class_for(type) %> fade in">
+      <%= message %>
+      <%= javascript_tag "$('#flash_notice').effect('highlight',{},1000);" %>
+      <%= javascript_tag "$('#flash_notice').fadeOut(5000);" %>
+    </div>
+<% end %>

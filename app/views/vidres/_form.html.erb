@@ -1,0 +1,60 @@
+<%= form_for(@vidre) do |f| %>
+  <% if @vidre.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@vidre.errors.count, "error") %> ha impedit que es guardes aquesta plantilla:</h2>
+
+      <ul>
+      <% @vidre.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :nom %><br>
+    <%= f.text_field :nom %>
+  </div>
+    <div class="field">
+      <%= f.label :tipus %><br>
+      <%=  f.select(:tipus, Vidre::TIPUS) %>
+    </div>
+    <div class="field">
+      <%= f.label :ubicacio %><br>
+      <%=  f.select(:ubicacio, Vidre::UBICACIO) %>
+    </div>
+  <div class="field">
+    <%= f.label :descripcio %><br>
+    <%= f.text_area :descripcio %>
+  </div>
+  <div class="field">
+    <%= f.label "Foto inicial" %><br>
+    <%= f.file_field :fotobase, :accept =>'image/*' %>
+  </div>
+  <div class="field">
+    <%= f.label :recompte %><br>
+    <%= f.number_field :recompte %>
+  </div>
+  <div class="field">
+    <%= f.label :estat_ok %><br>
+    <%= f.check_box :estat_ok %>
+  </div>
+  <div class="field">
+    <%= f.label :observacions %><br>
+    <%= f.text_area :observacions %>
+  </div>
+  <div class="field">
+    <%= f.label :foto %><br>
+    <%= f.file_field :foto, :accept =>'image/*' %>
+  </div>
+    <!--
+  <div class="field">
+    <%= f.label :auditv_id %><br>
+    <%= f.text_field :auditv_id %>
+  </div>
+  -->
+    </br>
+  <div class="actions">
+    <%= f.submit :class=>'btn btn-primary btn-block' %>
+  </div>
+<% end %>

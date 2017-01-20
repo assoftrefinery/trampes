@@ -1,0 +1,23 @@
+<h1 class="jumbotron">Nou Tipus de Control</h1>
+
+<%= render 'form' %>
+<br>
+<%= link_to 'Cancel·lar', product_types_path, :class=>'btn btn-primary btn-block' %>
+
+
+<script>
+  /*Esto lo he tenido que sacar de 'productypes.js.coffee' porque no se disparaba. Ver que ·$·" pasa*/
+  $(document).on('click', 'form .remove_fields', function(event) {
+    $(this).prev('input[type=hidden]').val('1');
+    $(this).closest('fieldset').hide(250);
+    return event.preventDefault();
+  });
+
+  $(document).on('click', 'form .add_fields', function(event) {
+    var regexp, time;
+    time = new Date().getTime();
+    regexp = new RegExp($(this).data('id'), 'g');
+    $(this).before($(this).data('fields').replace(regexp, time));
+    return event.preventDefault();
+  });
+</script>

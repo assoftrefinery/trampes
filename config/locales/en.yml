@@ -21,3 +21,9 @@
 
 en:
   hello: "Hello world"
+  helpers:
+      select:
+        prompt: Si us plau tria
+      submit:
+        update: Actualitzar %{model}
+        edit: Actualitzar %{model}

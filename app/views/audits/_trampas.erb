@@ -6,12 +6,22 @@
   </br>
   <div class="field">
     <%= f.label :tipus %>
-    <%= f.text_field :tipus, :readonly => true %>
+    <%= f.text_field :tipus, :readonly => true, :style => "min-width:20%" %>
   </div>
   </br>
   <div class="field">
     <%= f.label :ubicacio %>
     <%=  f.select(:ubicacio, Trampa::UBICACIO) %>
+  </div>
+  </br>
+  <div class="field">
+    <%= f.label :descripcio %>
+    <%= f.text_area :descripcio %>
+  </div>
+  </br>
+  <div class="field">
+    <%= f.label :fotobase %>
+    <%= f.file_field :fotobase, :accept =>'image/*' %>
   </div>
   </br>
   <div class="field">
@@ -30,6 +40,6 @@
   </div>
   <div class="field">
     <%= f.label :foto %><br>
-    <%= f.file_field :foto %>
+    <%= f.file_field :foto, :accept =>'image/*' %>
   </div>
 </fieldset>

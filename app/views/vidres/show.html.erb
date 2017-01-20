@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nom:</strong>
+  <%= @vidre.nom %>
+</p>
+
+<p>
+  <strong>Tipus:</strong>
+  <%= @vidre.tipus %>
+</p>
+
+<p>
+  <strong>Ubicacio:</strong>
+  <%= @vidre.ubicacio %>
+</p>
+
+<p>
+  <strong>Descripcio:</strong>
+  <%= @vidre.descripcio %>
+</p>
+
+<p>
+  <strong>Foto Inicial:</strong>
+  <%= image_tag @vidre.fotobase, :style => 'width:350px;height:150px;' %>
+</p>
+
+<p>
+  <strong>Recompte:</strong>
+  <%= @vidre.recompte %>
+</p>
+
+<p>
+  <strong>Estat ok:</strong>
+
+  <%= check_box "vidre", "estat_ok", {:checked => @vidre.estat_ok, :disabled => true}%>
+</p>
+
+<p>
+  <strong>Observacions:</strong>
+  <%= @vidre.observacions %>
+</p>
+
+<p>
+  <strong>Foto auditoria:</strong>
+  <%= image_tag @vidre.foto, :style => 'width:350px;height:150px;' %>
+</p>
+<!--
+<p>
+  <strong>Auditv:</strong>
+  <%= @vidre.auditv %>
+</p>
+-->
+
+<%= link_to 'Editar', edit_vidre_path(@vidre), :class=>'btn btn-primary btn-block' %> <br>
+<%= link_to 'Enrera', vidres_path, :class=>'btn btn-primary btn-block' %>

@@ -1,0 +1,18 @@
+<script>
+  $(function() {
+    $("#accordion:nth-child(1n)" ).accordion({
+      heightStyle: "content",
+      active: false,
+      collapsible: true
+    });
+  });
+</script>
+
+<h1 class="jumbotron">Editar Control</h1>
+
+<%= render 'form' %>
+</br>
+<%= link_to 'Veure', @control, :class=>'btn btn-primary btn-block' %>
+</br>
+</br>
+<%= link_to 'Enrera', controls_path, :class=>'btn btn-primary btn-block' %>

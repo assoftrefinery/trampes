@@ -1,5 +1,97 @@
-<h1 class="jumbotron">Menú Principal</h1>
+<h1 class="jumbotron">Gràfiques</h1>
 
-<p><a  href="/audits"  class='btn btn-primary btn-block'>Auditories</a></p>
-<p><a  href="/trampas" class='btn btn-primary btn-block'>Plantilles de trampes</a></p>
+<h2>Grafica1:Auditories_Trampes</h2>
 
+</br>
+
+
+<div style="margin-left:10%;margin-right:10%;width:80%;border:1px solid green;border-top:0px;border-left:0px;border-right:0px;">
+<input type="radio" name="mychart" class="mychart" id= "column" value="column" onclick= "chartfunc()" checked>Columna
+<input type="radio" name="mychart" class="mychart" id= "bar" value="bar" onclick= "chartfunc()">Barra
+<input type="radio" name="mychart" class="mychart" id= "pie" value="pie" onclick= "chartfunc()">Tarta
+<input type="radio" name="mychart" class="mychart" id= "line" value="line" onclick= "chartfunc()">Linea
+</div>
+
+</br>
+
+<div id="grafica1" style="/*width: 560px;*/ height: 90%;border:1px solid green;border-radius:3px;width:80%;margin-left:10%;margin-right:10%;"></div>
+
+</br>
+</br>
+
+<!--<p><a  href="/audits"  class='btn btn-primary btn-block'>Auditories</a></p>
+<p><a  href="/trampas" class='btn btn-primary btn-block'>Plantilles de trampes</a></p> -->
+<p><a  href="/home/principal" class='btn btn-primary btn-block'>Menu principal</a></p>
+
+<script type="text/javascript" charset="utf-8">
+
+
+
+  $(function () {
+    //Permite tener options, options1, options2
+    var options;
+    options =
+        {
+                  chart:  {           renderTo: 'orders_chart',  type: 'bar' },
+
+                  rangeSelector: {
+                                      enabled:true,
+                                      allButtonsEnabled: Boolean
+                  },
+
+                  title:  {           text: 'Recomptes'},
+
+                  xAxis:  {
+                                      type: 'datetime',
+                                      title: {text: 'X'}
+                          },
+
+                  yAxis:  {
+                                      type: 'integer',
+                                      title: { text: 'Y'}
+                          },
+                  series: [{
+                                    name: 'Recompte',
+
+                                    pointInterval: <%= 1.day * 1000 %>,
+
+                                    pointStart: <%= 30.days.ago.at_midnight.to_i * 1000 %>,
+
+                                    data: <%= (30.days.ago.to_date..Date.today).map { |date| Trampa.total_on(date).to_f}.inspect %>
+                          }]
+        }
+
+    options.chart.renderTo = 'grafica1';
+    options.chart.type = 'column';
+    var chart1 = new Highcharts.Chart(options);
+
+    chartfunc = function()
+    {
+      var column = document.getElementById('column');
+      var bar = document.getElementById('bar');
+      var pie = document.getElementById('pie');
+      var line = document.getElementById('line');
+
+      if (column.checked) {
+        options.chart.renderTo = 'grafica1';
+        options.chart.type = 'column';
+        var chart = new Highcharts.Chart(options);
+      }
+      else if (bar.checked) {
+        options.chart.renderTo = 'grafica1';
+        options.chart.type = 'bar';
+        var chart = new Highcharts.Chart(options);
+      }
+      else if (pie.checked) {
+        options.chart.renderTo = 'grafica1';
+        options.chart.type = 'pie';
+        var chart = new Highcharts.Chart(options);
+      }
+      else {
+        options.chart.renderTo = 'grafica1';
+        options.chart.type = 'line';
+        var chart = new Highcharts.Chart(options);
+      }
+    }
+  });
+</script>

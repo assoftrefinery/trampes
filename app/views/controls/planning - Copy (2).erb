@@ -1,0 +1,730 @@
+<script src="/assets/ap-scroll-top-codigo.js"></script>
+<script>
+$(function() {
+$("#accordion:nth-child(1n)" ).accordion({
+heightStyle: "content",
+active: false,
+collapsible: true
+});
+});
+</script>
+
+<% @hoy = Date.today %>
+
+<p id="notice"><%= notice %></p>
+
+<h1 class="jumbotron">Plànning de Controls</h1>
+
+<!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<div class="table-responsive">
+  <table align="center" class="table table-condensed" style="border-collapse:separate;border:2px solid grey;border-radius:5px;">
+    <tbody>
+    <tr>
+      <td>
+        <table class="table table-condensed" style="text-align:justify;">
+          <caption>Controls per fer avui</caption>
+          <thead>
+          <tr>
+            <!-- <th align="center"><%= sortable "id" %></th> -->
+            <th align="center"><%= sortable "Nom del Tipus de Control" %></th>
+            <th align="center"><%= sortable "datacontrol","Data Últim Control d'aquest Tipus" %></th>
+          </tr>
+          </thead>
+          <tbody>
+
+          <% @controls_per_fer_avui.each do |control| %>
+
+              <% control_seleccionat = @controls_avui.select {|a| (a.datacontrol.to_date == control.dataproximcontrol.to_date) && (a.product_type_id == control.product_type_id)} %>
+
+              <% if control_seleccionat.empty? %>
+                  <tr>
+                   <!--  <td><%= control.product_type_id %></td> -->
+                    <td align="center"><%= control.product_type.name %></td>
+                    <td align="center"><%= control.datacontrol.strftime('%d-%m-%Y') %>
+                    <td><%= link_to "Crear "+control.product_type.name, {:controller => "controls", :action => "new", :product_type_id => control.product_type_id }, :class=> 'btn btn-primary btn-block' %> </td>
+                  </tr>
+              <% end %>
+          <% end %>
+
+          </tbody>
+        </table>
+      </td>
+
+      <td>
+        <table class="table table-condensed TablaRedonda" border="1">
+          <caption><b>Controls fets avui</b></caption>
+          <thead>
+          <tr>
+           <!--  <th><%= sortable 'id' %></th> -->
+            <th><%= sortable "nom" %></th>
+            <th><%= sortable "datacontrol","Data Control" %></th>
+            <th><%= sortable "operari" %></th>
+
+            <th colspan="5"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% if @controls_avui.empty? %>
+              <tr><td colspan="5" align="center">No hi han controls fets avui</td></tr>
+          <% else %>
+              <% @controls_avui.each do |control| %>
+                  <tr>
+                  <!--   <td><%= control.product_type_id %></td> -->
+                    <td><%= control.nom %></td>
+                    <td><%= control.datacontrol.strftime('%d-%m-%Y') %> / <%= control.datacontrol.strftime('%H:%M')%></td>
+                    <td><%= control.operari %></td>
+
+                    <td><%= link_to 'Veure', control, :class=>'btn btn-primary btn-block' %></td>
+                    <!-- <td><%= link_to 'Editar', edit_control_path(control), :class=>'btn btn-warning btn-block' %></td>
+                          <td><%= link_to 'Esborrar', control, method: :delete, data: { confirm: 'Esborrar Control i totes les dades associades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td>-->
+                  </tr>
+              <% end %>
+          <% end %>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class='row'><hr><div class='span12'></div></div>
+
+<h3>Seleccionar tipus de control per crear:</h3>
+<%= form_tag new_control_path, method: :get do %>
+    <div class="form-group"> <%= select_tag :product_type_id, options_from_collection_for_select(ProductType.all.order('created_at desc'), :id, :name), :class=>"form-control" %> </div>
+    <%= submit_tag "Nou Control", name: nil, :class=>'btn btn-primary btn-block' %>
+<% end %>
+
+<div class='row'><hr><div class='span12'></div></div>
+
+<%= link_to "Anar a Històric i Gestió de Controls", controls_path, :class => 'btn btn-primary btn-block' %>
+
+<div class='row'><hr><div class='span12'></div></div>
+
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<h3>Controls que toca fer aquesta setmana</h3>
+
+<table class="table table-condensed">
+  <thead>
+  <tr>
+  <!--   <th><%= sortable "id" %></th> -->
+    <th><%= sortable "nom" %></th>
+    <th><%= sortable "datacontrol","Data Creacio Control" %></th>
+    <th><%= sortable "dataproximcontrol","Data Propera Execucio" %></th>
+    <th><%= sortable "operari" %></th>
+    <th colspan="4"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @controls_per_fer_aquesta_setmana.each do |control| %>
+      <tr>
+      <!--   <td><%= control.product_type_id %></td> -->
+        <td><%= control.nom %></td>
+        <td><%= control.datacontrol.strftime('%d-%m-%Y') %> / <%= control.datacontrol.strftime('%H:%M')%></td>
+        <td><%= control.dataproximcontrol.strftime('%d-%m-%Y') %></td>
+        <td><%= control.operari %></td>
+        <!--<td><%= link_to 'Veure', control, :class=>'btn btn-primary btn-block' %></td>
+        <td><%= link_to 'Editar', edit_control_path(control), :class=>'btn btn-warning btn-block' %></td>
+        <td><%= link_to 'Esborrar', control, method: :delete, data: { confirm: 'Esborrar Control i totes les dades associades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td>-->
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @controls_per_fer_aquesta_setmana %>
+<%= page_entries_info @controls_per_fer_aquesta_setmana %>
+
+<div class='row'><hr><div class='span12'></div></div>
+
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<h3>Controls que toca fer la setmana del <%= @hoy.beginning_of_week.next_week.strftime('%d-%m-%Y') %> al <%= @hoy.beginning_of_week.next_week.end_of_week.strftime('%d-%m-%Y') %></h3>
+
+<table class="table table-condensed">
+  <thead>
+  <tr>
+ <!--    <th><%= sortable "id" %></th> -->
+    <th><%= sortable "nom" %></th>
+    <th><%= sortable "datacontrol","Data Creacio Control" %></th>
+    <th><%= sortable "dataproximcontrol","Data Propera Execucio" %></th>
+    <th><%= sortable "operari" %></th>
+    <th colspan="4"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @controls_per_fer_setmana.each do |control| %>
+      <tr>
+     <!--    <td><%= control.product_type_id %></td> -->
+        <td><%= control.nom %></td>
+        <td><%= control.datacontrol.strftime('%d-%m-%Y') %> / <%= control.datacontrol.strftime('%H:%M')%></td>
+        <td><%= control.dataproximcontrol.strftime('%d-%m-%Y') %></td>
+        <td><%= control.operari %></td>
+        <!--<td><%= link_to 'Veure', control, :class=>'btn btn-primary btn-block' %></td>
+        <td><%= link_to 'Editar', edit_control_path(control), :class=>'btn btn-warning btn-block' %></td>
+        <td><%= link_to 'Esborrar', control, method: :delete, data: { confirm: 'Esborrar Control i totes les dades associades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td>-->
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @controls_per_fer_setmana %>
+<%= page_entries_info @controls_per_fer_setmana %>
+
+<div class='row'><hr><div class='span12'></div></div>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<h3>Controls que toca fer el mes de <%= I18n.localize(@hoy.next_month.beginning_of_month, :format => '%B') %> </h3>
+
+<table class="table table-condensed">
+  <thead>
+  <tr>
+ <!--    <th><%= sortable "id" %></th> -->
+    <th><%= sortable "nom" %></th>
+    <th><%= sortable "datacontrol","Data Creacio Control" %></th>
+    <th><%= sortable "dataproximcontrol","Data Propera Execucio" %></th>
+    <th><%= sortable "operari" %></th>
+    <th colspan="4"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @controls_per_fer_mes.each do |control| %>
+      <tr>
+      <!--   <td><%= control.product_type_id %></td> -->
+        <td><%= control.nom %></td>
+        <td><%= control.datacontrol.strftime('%d-%m-%Y') %> / <%= control.datacontrol.strftime('%H:%M')%></td>
+        <td><%= control.dataproximcontrol.strftime('%d-%m-%Y') %></td>
+        <td><%= control.operari %></td>
+        <!-- <td><%= link_to 'Veure', control, :class=>'btn btn-primary btn-block' %></td>
+        <td><%= link_to 'Editar', edit_control_path(control), :class=>'btn btn-warning btn-block' %></td>
+        <td><%= link_to 'Esborrar', control, method: :delete, data: { confirm: 'Esborrar Control i totes les dades associades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td> -->
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @controls_per_fer_mes %>
+<%= page_entries_info @controls_per_fer_mes %>
+
+<div class='row'><hr><div class='span12'></div></div>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<h3>Controls endarrerits</h3>
+
+<table class="table table-condensed">
+  <thead>
+  <tr>
+  <!--   <th><%= sortable "id" %></th> -->
+    <th><%= sortable "nom" %></th>
+    <th><%= sortable "datacontrol","Data Creacio Control" %></th>
+    <th><%= sortable "dataproximcontrol","Data Execucio Prevista" %></th>
+    <th><%= sortable "operari" %></th>
+    <th colspan="4"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @controls_endarrerits.each do |control| %>
+      <tr>
+     <!--    <td><%= control.product_type_id %></td> -->
+        <td><%= control.nom %></td>
+        <td><%= control.datacontrol.strftime('%d-%m-%Y') %> / <%= control.datacontrol.strftime('%H:%M')%></td>
+        <td><%= control.dataproximcontrol.strftime('%d-%m-%Y') %></td>
+        <td><%= control.operari %></td>
+        <td><%= link_to "Crear "+control.product_type.name, {:controller => "controls", :action => "new", :product_type_id => control.product_type_id }, :class=> 'btn btn-primary btn-block' %> </td>
+        <!-- <td><%= link_to 'Veure', control, :class=>'btn btn-primary btn-block' %></td>
+        <td><%= link_to 'Editar', edit_control_path(control), :class=>'btn btn-warning btn-block' %></td>
+        <td><%= link_to 'Esborrar', control, method: :delete, data: { confirm: 'Esborrar Control i totes les dades associades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td> -->
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @controls_endarrerits %>
+<%= page_entries_info @controls_endarrerits %>
+
+<div class='row'><hr><div class='span12'></div></div>
+<!----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<hr>
+
+<h2>Secció de proves ( temporal, a desapareixer)</h2>
+<h3> Controls creats avui (Prova de propietats > llistat) </h3>
+
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th><%= sortable 'id' %></th>
+    <th><%= sortable "nom" %></th>
+    <th><%= sortable "datacontrol","Data Control" %></th>
+    <th><%= sortable "operari" %></th>
+
+        <% @controls_avui.each do |control| %>
+                <% control.product_type.fields.each do |field1, field2| %>
+                    <% if field1.llistat? %>
+                        <% @campo = field1 %>
+                        <% field1.name %>
+                        <th><%= field1.name %></th>
+                    <% end %>
+                <% end %>
+        <% end %>
+
+    <th colspan="5"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @controls_avui.each do |control| %>
+      <tr>
+        <td><%= control.product_type_id %></td>
+        <td><%= control.nom %></td>
+        <td><%= control.datacontrol.strftime('%d-%m-%Y') %> / <%= control.datacontrol.strftime('%H:%M')%></td>
+        <td><%= control.operari %></td>
+
+              <% control.product_type.fields.each do |field1| %>
+                  <% if field1.llistat? %>
+                        <% @campo = field1 %>
+                        <% field1.name %>
+
+                                <% control.properties.each do |name, value| %>
+                                    <% if @campo != nil %>
+                                        <% if @campo.name == name %> <td><%= value %></td>
+                                        <% end %>
+                                    <% end %>
+                                <% end %>
+                  <% end %>
+              <% end %>
+
+        <td><%= link_to 'Veure', control, :class=>'btn btn-primary btn-block' %></td>
+        <td><%= link_to 'Editar', edit_control_path(control), :class=>'btn btn-warning btn-block' %></td>
+        <td><%= link_to 'Esborrar', control, method: :delete, data: { confirm: 'Esborrar Control i totes les dades associades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @controls_avui %>
+<%= page_entries_info @controls_avui %>
+
+<hr>
+
+<h3> Controls que toca fer avui</h3>
+
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th><%= sortable "id" %></th>
+    <th><%= sortable "nom" %></th>
+    <th><%= sortable "datacontrol","Data Control" %></th>
+    <th><%= sortable "operari" %></th>
+    <th colspan="4"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @controls_per_fer_avui.each do |control| %>
+      <tr>
+        <td><%= control.product_type_id %></td>
+        <td><%= control.nom %></td>
+        <td><%= control.datacontrol.strftime('%d-%m-%Y') %> / <%= control.datacontrol.strftime('%H:%M')%></td>
+        <td><%= control.operari %></td>
+        <td><%= link_to 'Veure', control, :class=>'btn btn-primary btn-block' %></td>
+        <td><%= link_to 'Editar', edit_control_path(control), :class=>'btn btn-warning btn-block' %></td>
+        <td><%= link_to 'Esborrar', control, method: :delete, data: { confirm: 'Esborrar Control i totes les dades associades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @controls_per_fer_avui %>
+<%= page_entries_info @controls_per_fer_avui %>
+
+<hr>
+
+<hr>
+
+<h3> Controls que toca fer el mes que ve</h3>
+
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th><%= sortable "id" %></th>
+    <th><%= sortable "nom" %></th>
+    <th><%= sortable "datacontrol","Data Creacio Control" %></th>
+    <th><%= sortable "dataproximcontrol","Data Execucio" %></th>
+    <th><%= sortable "operari" %></th>
+    <th colspan="4"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @controls_per_fer_mes.each do |control| %>
+      <tr>
+        <td><%= control.product_type_id %></td>
+        <td><%= control.nom %></td>
+        <td><%= control.datacontrol.strftime('%d-%m-%Y') %> / <%= control.datacontrol.strftime('%H:%M')%></td>
+        <td><%= control.dataproximcontrol.strftime('%d-%m-%Y') %></td>
+        <td><%= control.operari %></td>
+        <td><%= link_to 'Veure', control, :class=>'btn btn-primary btn-block' %></td>
+        <td><%= link_to 'Editar', edit_control_path(control), :class=>'btn btn-warning btn-block' %></td>
+        <td><%= link_to 'Esborrar', control, method: :delete, data: { confirm: 'Esborrar Control i totes les dades associades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @controls_per_fer_mes %>
+<%= page_entries_info @controls_per_fer_mes %>
+
+<hr>
+
+<h3> Controls TEST NOM</h3>
+
+<table class="table table-condensed" style="text-align:justify;">
+  <thead>
+  <tr>
+    <th align="center"><%= sortable "id" %></th>
+    <th align="center"><%= sortable "Nom del Tipus de Control" %></th>
+    <th align="center"><%= sortable "datacontrol","Data Últim Control d'aquest Tipus" %></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @controls_per_fer_setmana.each do |control| %>
+      <tr>
+        <td><%= control.product_type_id %></td>
+        <td><%= control.product_type.name %></td>
+        <td><%= control.datacontrol.strftime('%d-%m-%Y') %>
+
+        <td><%= link_to "Crear "+control.product_type.name, {:controller => "controls", :action => "new", :product_type_id => control.product_type_id }, :class=> 'btn btn-primary btn-block' %> </td>
+
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= paginate @controls_per_fer_setmana %>
+<%= page_entries_info @controls_per_fer_setmana %>
+
+<hr>
+
+<br>
+
+
+
+<br>
+<br>
+<br>
+<hr>
+
+<% @controls_avui.each do |control_fet| %>
+    <% @miloop = control_fet %>
+    <% @controls_per_fer_avui.each do |control_per_fer| %>
+
+       <!-- <p>
+          <b>Per fer: <%= control_per_fer.dataproximcontrol.to_date %></b>
+          <i>Fet: <%= control_fet.datacontrol.to_date %></i>
+        </p> -->
+
+        <% if (control_per_fer.dataproximcontrol.to_date == control_fet.datacontrol.to_date) && (control_per_fer.product_type_id == control_fet.product_type_id) %>
+            <p>OK</p>
+        <% else %>
+            <p><%= control_per_fer.nom %> / <%= control_per_fer.dataproximcontrol.to_date %></p>
+        <% end %>
+
+    <% end %>
+    <hr>
+<% end %>
+
+
+<br>
+<hr>
+<h4>Test Check C_Avui</h4>
+<br>
+<%= @contador %>
+<% @controls_avui.each do |control_fet| %>
+
+    <% control_seleccionat = @controls_per_fer_avui.select {|a| (a.dataproximcontrol.to_date == control_fet.datacontrol.to_date) && (a.product_type_id == control_fet.product_type_id)} %>
+
+    <% @contador = control_seleccionat %>
+
+    <% if control_seleccionat.empty? %>
+        <p>No hay</p>
+    <% else %>
+        <%= control_seleccionat %>
+    <% end %>
+
+<% end %>
+<hr>
+
+
+<br>
+<hr>
+<br>
+
+
+
+
+<div class="table-responsive">
+  <table align="center" class="table table-condensed" style="border-collapse:separate;border:2px solid grey;border-radius:5px;">
+    <tbody>
+    <tr>
+      <td>
+        <table class="table table-condensed" style="text-align:justify;">
+          <caption>Controls per fer avui</caption>
+          <thead>
+          <tr>
+            <th align="center"><%= sortable "id" %></th>
+            <th align="center"><%= sortable "Nom del Tipus de Control" %></th>
+            <th align="center"><%= sortable "datacontrol","Data Últim Control d'aquest Tipus" %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @controls_per_fer_avui.each do |control| %>
+              <tr>
+                <td><%= control.product_type_id %></td>
+                <td align="center"><%= control.product_type.name %></td>
+                <td align="center"><%= control.datacontrol.strftime('%d-%m-%Y') %>
+                <td><%= link_to "Crear "+control.product_type.name, {:controller => "controls", :action => "new", :product_type_id => control.product_type_id }, :class=> 'btn btn-primary btn-block' %> </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </td>
+
+      <td>
+        <table class="table table-condensed TablaRedonda" border="1">
+          <caption><b>Controls fets avui</b></caption>
+          <thead>
+          <tr>
+            <th><%= sortable 'id' %></th>
+            <th><%= sortable "nom" %></th>
+            <th><%= sortable "datacontrol","Data Control" %></th>
+            <th><%= sortable "operari" %></th>
+
+            <th colspan="5"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% if @controls_avui.empty? %>
+              <tr><td colspan="5" align="center">No hi han controls fets avui</td></tr>
+          <% else %>
+              <% @controls_avui.each do |control| %>
+                  <tr>
+                    <td><%= control.product_type_id %></td>
+                    <td><%= control.nom %></td>
+                    <td><%= control.datacontrol.strftime('%d-%m-%Y') %> / <%= control.datacontrol.strftime('%H:%M')%></td>
+                    <td><%= control.operari %></td>
+
+                    <td><%= link_to 'Veure', control, :class=>'btn btn-primary btn-block' %></td>
+                    <!-- <td><%= link_to 'Editar', edit_control_path(control), :class=>'btn btn-warning btn-block' %></td>
+                          <td><%= link_to 'Esborrar', control, method: :delete, data: { confirm: 'Esborrar Control i totes les dades associades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td>-->
+                  </tr>
+              <% end %>
+          <% end %>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<br>
+<h3>Test Fabricacions</h3>
+<br>
+<!-- <input style="text-align:center;" type="text" id="testfabtext" name="fname"> -->
+<br>
+
+<div id="accordion">
+<h3>Fabricació: <input style="text-align:center;" type="text" id="fabtext" name="fname" class="borde-normal" readonly></h3>
+<div>
+                        <% if @fabs.nil? %>
+                        <p> No fabs </p>
+                            <% else %>
+
+                            <h3>TEST FABRICACIONS</h3>
+
+                            <table class="table table-condensed" style="text-align:justify;">
+                              <thead>
+                              <tr>
+                                <th align="center"></th>
+                                <th align="center"><%= sortable "Empresa" %></th>
+                                <th align="center"><%= sortable "Codigo" %></th>
+                                <th align="center"><%= sortable "Fecha" %></th>
+                                <th align="center"><%= sortable "NombreFabricacion" %></th>
+                              </tr>
+                              </thead>
+
+                              <tbody>
+                              <% @fabs.each do |control| %>
+                                  <tr>
+                                    <td>
+                                      <%= link_to 'Seleccionar', {:controller => "controls", :action => "asignar_fabricacion", :id => control.id, :remote => true }, :class=> 'btn btn-primary btn-block' %>
+                                    </td>
+                                    <td><%= control.NomEmp %></td>
+                                    <td><%= control.Codigo %></td>
+                                    <td><span class="badge"><%= control.Fecha.strftime('%d-%m-%Y') %> <b>·</b> <%= control.Fecha.strftime('%H:%M') %></span></td>
+                                    <td><%= control.NombreFabricacion %></td>
+                                    <!-- Aqui va nombre fabricacion, revisar error UTF-8 -->
+                                  </tr>
+                              <% end %>
+                              </tbody>
+                            </table>
+
+                        <% end %>
+</div>
+</div>
+<br>
+
+
+
+<table class="table table-condensed" border="1">
+  <caption>Control: PASTEURIZADO</caption>
+  <thead>
+  <tr>
+    <th align="center"><%= sortable "Nom" %></th>
+    <th align="center"><%= sortable "Data" %></th>
+    <th align="center"><%= sortable "Operari" %></th>
+    <th align="center"><%= sortable "Freqüència" %></th>
+    <th align="center"><%= sortable "Fabricacio" %></th>
+
+    <th class="th-vertical"><%= sortable "Fabricacio" %></th>
+    <th align="center" class="th-vertical"><%= sortable "Tmp Entrada" %></th>
+    <th align="center" class="th-vertical"><%= sortable "Tmp Sortida Past." %></th>
+    <th align="center" class="th-vertical"><%= sortable "Tmp Sortida Cool." %></th>
+    <th align="center" class="th-vertical"><%= sortable "Mostra Vinculada?" %></th>
+    <th align="center" class="th-vertical"><%= sortable "ID Mostra" %></th>
+    <th align="center" class="th-vertical"><%= sortable "Humitat Entrada" %></th>
+    <th align="center" class="th-vertical"><%= sortable "Act. H2O Entrada" %></th>
+    <th align="center" class="th-vertical"><%= sortable "Humitat Sortida" %></th>
+    <th align="center" class="th-vertical"><%= sortable "Act. H2O Sortida" %></th>
+    <th align="center" class="th-vertical"><%= sortable "Observacions" %></th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <% @todos.each do |control| %>
+      <tr>
+
+        <td>                      <%= control.nom %>                                                                                          </td>
+        <td>                      <%= control.datacontrol.strftime('%d-%m-%Y') %> <b>·</b> <%= control.datacontrol.strftime('%H:%M') %>       </td>
+        <td>                      <%= control.operari %>                                                                                      </td>
+        <td>                      <%= control.frecuencia %>                                                                                   </td>
+        <td>                      <%= control.fabricacio %>                                                                                   </td>
+
+        <td>                      <% if control.properties.values[0].nil? %>N/A<% else %><%= control.properties.values[0] %><%end%>    </td>
+        <td>                      <% if control.properties.values[1].nil? %>N/A<% else %><%= control.properties.values[1] %><%end%>    </td>
+        <td>                      <% if control.properties.values[2].nil? %>N/A<% else %><%= control.properties.values[2] %><%end%>    </td>
+        <td>                      <% if control.properties.values[3].nil? %>N/A<% else %><%= control.properties.values[3] %><%end%>    </td>
+        <td>                      <% if control.properties.values[4].nil? %>N/A<% else %><%= control.properties.values[4] %><%end%>    </td>
+        <td>                      <% if control.properties.values[5].nil? %>N/A<% else %><%= control.properties.values[5] %><%end%>    </td>
+        <td>                      <% if control.properties.values[6].nil? %>N/A<% else %><%= control.properties.values[6] %><%end%>    </td>
+        <td>                      <% if control.properties.values[7].nil? %>N/A<% else %><%= control.properties.values[7] %><%end%>    </td>
+        <td>                      <% if control.properties.values[8].nil? %>N/A<% else %><%= control.properties.values[8] %><%end%>    </td>
+        <td>                      <% if control.properties.values[9].nil? %>N/A<% else %><%= control.properties.values[9] %><%end%>    </td>
+        <td>                      <% if control.properties.values[10].nil? %>N/A<% else %><%= control.properties.values[10] %><%end%>  </td>
+
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+<br>
+<hr>
+<br>
+
+<table style="text-align:center;vertical-align:middle;" border="1">
+  <caption>Control: PASTEURIZADO</caption>
+  <thead>
+  <tr>
+    <th align="center"><%= sortable "Nom" %></th>
+    <th align="center"><%= sortable "Data" %></th>
+    <th align="center"><%= sortable "Operari" %></th>
+    <th align="center"><%= sortable "Freqüència" %></th>
+    <th align="center"><%= sortable "Fabricacio" %></th>
+
+    <th align="center"><%= sortable "Fabricacio" %></th>
+    <th align="center"><%= sortable "Tmp Entrada" %></th>
+    <th align="center"><%= sortable "Tmp Sortida Past." %></th>
+    <th align="center"><%= sortable "Tmp Sortida Cool." %></th>
+    <th align="center"><%= sortable "Mostra Vinculada?" %></th>
+    <th align="center"><%= sortable "ID Mostra" %></th>
+    <th align="center"><%= sortable "Humitat Entrada" %></th>
+    <th align="center"><%= sortable "Act. H2O Entrada" %></th>
+    <th align="center"><%= sortable "Humitat Sortida" %></th>
+    <th align="center"><%= sortable "Act. H2O Sortida" %></th>
+    <th align="center"><%= sortable "Observacions" %></th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <% @todos.each do |control| %>
+      <tr>
+
+        <td>                      <%= control.nom %>                                                                                          </td>
+        <td>                      <%= control.datacontrol.strftime('%d-%m-%Y') %> <b>·</b> <%= control.datacontrol.strftime('%H:%M') %>       </td>
+        <td>                      <%= control.operari %>                                                                                      </td>
+        <td>                      <%= control.frecuencia %>                                                                                   </td>
+        <td>                      <%= control.fabricacio %>                                                                                   </td>
+
+        <td>                      <% if control.properties.values[0].nil? %>N/A<% else %><%= control.properties.values[0] %><%end%>    </td>
+        <td>                      <% if control.properties.values[1].nil? %>N/A<% else %><%= control.properties.values[1] %><%end%>    </td>
+        <td>                      <% if control.properties.values[2].nil? %>N/A<% else %><%= control.properties.values[2] %><%end%>    </td>
+        <td>                      <% if control.properties.values[3].nil? %>N/A<% else %><%= control.properties.values[3] %><%end%>    </td>
+        <td>                      <% if control.properties.values[4].nil? %>N/A<% else %><%= control.properties.values[4] %><%end%>    </td>
+        <td>                      <% if control.properties.values[5].nil? %>N/A<% else %><%= control.properties.values[5] %><%end%>    </td>
+        <td>                      <% if control.properties.values[6].nil? %>N/A<% else %><%= control.properties.values[6] %><%end%>    </td>
+        <td>                      <% if control.properties.values[7].nil? %>N/A<% else %><%= control.properties.values[7] %><%end%>    </td>
+        <td>                      <% if control.properties.values[8].nil? %>N/A<% else %><%= control.properties.values[8] %><%end%>    </td>
+        <td>                      <% if control.properties.values[9].nil? %>N/A<% else %><%= control.properties.values[9] %><%end%>    </td>
+        <td>                      <% if control.properties.values[10].nil? %>N/A<% else %><%= control.properties.values[10] %><%end%>  </td>
+
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+<hr>
+<br>
+<%= select_tag :product_type_id, options_from_collection_for_select(ProductType.all.order('created_at desc'), :id, :name), :class => 'form-control', :id => 'select_tabla',
+    data: {
+    remote: true,
+    url: url_for( action: :mostrar_tabla_control, product_type_id: :id)} %>
+<br>
+<hr>
+<div id="planning"></div>
+<hr>

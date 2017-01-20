@@ -1,0 +1,8 @@
+<fieldset>
+  <%= f.select :field_type, %w[text area_de_text check_box numeric sino dropdown1] %>
+  <%= f.text_field :name, placeholder: "nom_del_camp" %>
+  <%= f.check_box :required %> <%= f.label "Requerit" %>
+  <%= f.check_box :llistat %> <%= f.label "Llistat" %>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to "Eliminar camp", '#', class: "remove_fields btn btn-primary" %>
+</fieldset>

@@ -7,7 +7,7 @@ class TrampasController < ApplicationController
     #@trampas = Trampa.all
     #Mostrar solo las trampas sin audit_id, que son las plantillas
     #Si tienen audit_id quiere decir que forman parte de una Auditoria
-    @trampas = Trampa.where(:audit_id=>nil)
+    @trampas = Trampa.where(:audit_id=>nil).page(params[:page]).per(10)
   end
 
   # GET /trampas/1
@@ -23,6 +23,12 @@ class TrampasController < ApplicationController
 
   # GET /trampas/1/edit
   def edit
+    @trampa = Trampa.find(params[:id])
+    if (@trampa.audit_id == nil)
+      @msg='Editar plantilla de Trampa'
+    else
+      @msg='Editar Trampa'
+    end
     #render :text => 'HOLA'
     #@audit = Audit.where(:id=>params[:audits_id])
     #@trampa = Trampa.find(params[:id])
@@ -52,9 +58,11 @@ class TrampasController < ApplicationController
     respond_to do |format|
       if @trampa.update(trampa_params)
             if (request.referer == edit_trampa_url) && (@trampa.audit_id != nil)
+              @msg='Editar Trampa'
               format.html { redirect_to audit_path(@trampa.audit_id) , notice: 'Trampa actualitzada.' }
               format.json { render :show, status: :ok, location: @trampa }
             else
+              @msg='Editar plantilla de Trampa'
               format.html { redirect_to @trampa, notice: 'La plantilla ha estat actualitzada' }
             end
       else
@@ -82,6 +90,6 @@ class TrampasController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trampa_params
-      params.require(:trampa).permit(:id, :nom, :tipus, :recompte, :estat_ok, :observacions, :ubicacio, :foto, :audit_id)
+      params.require(:trampa).permit(:id, :nom, :tipus, :recompte, :estat_ok, :observacions, :ubicacio, :foto, :fotobase, :audit_id)
     end
 end

@@ -1,0 +1,15 @@
+<script>
+  $(function() {
+    $("#accordion:nth-child(1n)" ).accordion({
+      heightStyle: "content",
+      active: false,
+      collapsible: true
+    });
+  });
+</script>
+
+<h1 class="jumbotron">Crear nou Control</h1>
+
+<%= render 'form' %>
+</br>
+<%= link_to 'Cancel·lar', controls_planning_path, :class=>'btn btn-primary btn-block' %>

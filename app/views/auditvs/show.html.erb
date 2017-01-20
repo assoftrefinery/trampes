@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Data:</strong>
+  <%= @auditv.dataaudit %>
+</p>
+
+<p>
+  <strong>Observacions:</strong>
+  <%= @auditv.observacions %>
+</p>
+
+<!-- loop de todos los vidres -->
+
+<table class="table table-condensed">
+  <thead>
+  <tr>
+    <th>Nom</th>
+    <th>Tipus</th>
+    <th>Ubicació</th>
+    <th>Descripció</th>
+    <th>Recompte</th>
+    <th>Estat Ok</th>
+    <th>Observacions</th>
+    <!-- <th>Auditoria</th> -->
+    <th>Foto</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @vidres.each do |vidre| %>
+      <tr>
+        <td><%= vidre.nom %></td>
+        <td><%= vidre.tipus %></td>
+        <td><%= vidre.ubicacio %></td>
+        <td><%= vidre.descripcio %></td>
+        <td><%= image_tag vidre.fotobase, :style => 'width:175px;height:75px;'%></td>
+        <td align="center"><%= vidre.recompte %></td>
+        <td><%= check_box "vidre", "estat_ok", {:checked => vidre.estat_ok, :disabled => true}%></td>
+        <td><%= vidre.observacions %></td>
+
+        <!--  <td><%= vidre.auditv.id %></td> -->
+
+        <td> <%= image_tag vidre.foto, :style => 'width:175px;height:75px;' %></td>
+
+        <!-- <td><%= link_to 'Veure vidre', vidre %></td> -->
+
+        <td><%= link_to 'Editar vidre', edit_vidre_path(vidre), :class=>'btn btn-primary btn-block' %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+</br>
+
+
+<%= link_to 'Editar', edit_auditv_path(@auditv), :class=>'btn btn-primary btn-block' %> |
+<%= link_to 'Enrera', auditvs_path, :class=>'btn btn-primary btn-block' %>

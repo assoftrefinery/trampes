@@ -1,0 +1,12 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nom:</strong>
+  <%= @product_type.name %>
+</p>
+
+<%= render 'form' %>
+</br>
+<%= link_to 'Editar', edit_product_type_path(@product_type),  :class=>'btn btn-primary btn-block' %>
+</br>
+<%= link_to 'Enrera', product_types_path,  :class=>'btn btn-primary btn-block' %>

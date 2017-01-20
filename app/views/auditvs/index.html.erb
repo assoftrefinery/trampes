@@ -1,0 +1,41 @@
+<script src="/assets/ap-scroll-top-codigo.js"></script>
+
+<p id="notice"><%= notice %></p>
+
+<h1 class="jumbotron">Històric d'auditories de Vidres/PD/BPH/BPM/FD/E-I</h1>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Observacions</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @auditvs.each do |auditv| %>
+      <tr>
+        <td><%= auditv.dataaudit.strftime('%d-%m-%Y') %> / <%= auditv.created_at.strftime('%H:%M')%> <b>Propera revisio:</b> <%= (auditv.created_at + 2.months).strftime('%d-%m-%Y') %> </td>
+       <!-- <td><%= auditv.dataaudit %></td> -->
+        <td><%= auditv.observacions %></td>
+        <td><%= link_to 'Veure', auditv, :class=>'btn btn-primary btn-block' %></td>
+
+        <td><%= link_to 'Editar capçalera', edit_auditv_path(auditv), :class=>'btn btn-warning btn-block' %></td>
+
+        <td><%= link_to 'Esborrar', auditv, method: :delete, data: { confirm: 'Esborrar auditoria y plantilles relacionades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Nova auditoria de Vidres/PD/BPH/BPM/FD/E-I', new_auditv_path, :class=>'btn btn-primary btn-block' %>
+<%= link_to 'Plantilles de Vidres/PD/BPH/BPM/FD/E-I', vidres_path, :class=>'btn btn-primary btn-block' %>
+<br>
+<%= link_to 'Enrera', '\home\menu_auditories', :class=>'btn btn-primary btn-block' %>
+<%= link_to 'Menu Principal', home_principal_path, :class=>'btn btn-primary btn-block' %>
+<br>
+<%= paginate @auditvs %>
+<%= page_entries_info @auditvs %>

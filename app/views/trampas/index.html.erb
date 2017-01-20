@@ -1,16 +1,21 @@
+<script src="/assets/ap-scroll-top-codigo.js"></script>
+
 <p id="notice"><%= notice %></p>
 
-<h1 class="jumbotron">Llistat Plantilles</h1>
+<h1 class="jumbotron">Llistat Plantilles de Trampes</h1>
 
-<table class="table table-hover">
+<table class="table table-condensed">
   <thead>
     <tr>
       <th>Nom</th>
       <th>Tipus</th>
-      <th>Ubicacio</th>
+      <th>Ubicació</th>
+      <th>Descripció</th>
+      <th>Foto Inicial</th>
       <th>Recompte</th>
       <th>Estat ok</th>
       <th>Observacions</th>
+      <th>Foto Auditoria</th>
       <!--<th>Audit</th>-->
       <th colspan="3"></th>
     </tr>
@@ -22,23 +27,30 @@
         <td><%= trampa.nom %></td>
         <td><%= trampa.tipus %></td>
         <td><%= trampa.ubicacio %></td>
-        <td><%= trampa.recompte %></td>
-        <td><%= trampa.estat_ok %></td>
+        <td><%= trampa.descripcio %></td>
+        <td><%= image_tag trampa.fotobase, :style => 'width:175px;height:75px;' ,:class=>"img-thumbnail"%></td>
+        <td align="center"><%= trampa.recompte %></td>
+        <td><%= check_box "trampa", "estat_ok", {:checked => trampa.estat_ok,   :disabled => true}%></td>
         <td><%= trampa.observacions %></td>
+        <td><%= image_tag trampa.foto, :style => 'width:175px;height:75px;'    ,:class=>"img-thumbnail"%></td>
        <!-- <td><%= trampa.audit %></td> -->
 
         <td><%= link_to 'Veure', trampa, :class=>'btn btn-primary btn-block' %></td>
         <td><%= link_to 'Editar', edit_trampa_path(trampa), :class=>'btn btn-warning btn-block' %></td>
 
-        <!-- <td><%= link_to 'Esborrar', trampa, method: :delete, data: { confirm: 'Esborrar plantilla?' } %></td> -->
+        <!--  <td><%= link_to 'Esborrar', trampa, method: :delete, data: { confirm: 'Esborrar plantilla?' } %></td> -->
       </tr>
     <% end %>
   </tbody>
 </table>
 
+<%= paginate @trampas %>
+<%= page_entries_info @trampas %>
+
 </br>
 <%= link_to 'Crear plantilla', new_trampa_path, :class=>'btn btn-primary btn-block'%>
 </br>
 </br>
-<%= link_to 'Menu principal', home_index_path, :class=>'btn btn-primary btn-block'%>
+<%= link_to 'Enrera', audits_path, :class=>'btn btn-primary btn-block'%>
 </br>
+

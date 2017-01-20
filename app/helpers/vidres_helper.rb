@@ -1,0 +1,2 @@
+module VidresHelper
+end

@@ -1,0 +1,228 @@
+<h1 class="jumbotron">Auditories</h1>
+
+<h2>Grafica1:Auditories_Trampes</h2>
+
+</br>
+
+<div style="margin-left:10%;margin-right:10%;width:80%;">
+<input type="radio" name="mychart" class="mychart" id= "column" value="column" onclick= "chartfunc()" checked>Columna
+<input type="radio" name="mychart" class="mychart" id= "bar" value="bar" onclick= "chartfunc()">Barra
+<input type="radio" name="mychart" class="mychart" id= "pie" value="pie" onclick= "chartfunc()">Tarta
+<input type="radio" name="mychart" class="mychart" id= "line" value="line" onclick= "chartfunc()">Linea
+</div>
+
+</br>
+
+<div id="orders_chart" style="/*width: 560px;*/ height: 90%;border:1px solid green;border-radius:3px;width:80%;margin-left:10%;margin-right:10%;"></div>
+
+</br>
+</br>
+
+<!--<p><a  href="/audits"  class='btn btn-primary btn-block'>Auditories</a></p>
+<p><a  href="/trampas" class='btn btn-primary btn-block'>Plantilles de trampes</a></p> -->
+<p><a  href="/home/principal" class='btn btn-primary btn-block'>Menu principal</a></p>
+
+<script type="text/javascript" charset="utf-8">
+  $(function () {
+
+    var options;
+    var chart1 = new Highcharts.Chart(options);
+    //var chart = new Highcharts.Chart(
+    options =
+        {
+                  chart:  { renderTo: 'orders_chart',  type: 'bar' },
+                  title:  { text: 'Recomptes'},
+
+
+                  xAxis:  {
+                            type: 'datetime',
+                            title: {text: 'X'}
+                          },
+
+                  yAxis:  {
+                            type: 'integer',
+                            title: { text: 'Y'}
+                          },
+                  series: [{
+                              pointInterval: <%= 1.hour * 1000 %>,
+
+                              pointStart: <%= 30.days.ago.at_midnight.to_i * 1000 %>,
+
+                              data: <%= (30.days.ago.to_date..Date.today).map { |date| Trampa.total_on(date).to_f}.inspect %>
+                          }]
+        });
+    options.chart.renderTo = 'orders_chart';
+    options.chart.type = 'column';
+    var column = document.getElementById('column');
+    var bar = document.getElementById('bar');
+    var pie = document.getElementById('pie');
+    var line = document.getElementById('line');
+
+    if(column.checked)
+    {
+      options.chart.renderTo = 'orders_chart';
+      options.chart.type = 'column';
+      var chart = new Highcharts.Chart(options);
+    }
+    else if(bar.checked)
+    {
+      options.chart.renderTo = 'orders_chart';
+      options.chart.type = 'bar';
+      var chart = new Highcharts.Chart(options);
+    }
+    else if(pie.checked)
+    {
+      options.chart.renderTo = 'orders_chart';
+      options.chart.type = 'pie';
+      var chart = new Highcharts.Chart(options);
+    }
+    else
+    {
+      options.chart.renderTo = 'orders_chart';
+      options.chart.type = 'line';
+      var chart = new Highcharts.Chart(options);
+    }
+  });
+</script>
+
+/* para enlaces a controller#action especifico */
+<%= link_to '*Nova auditoria*TEST', {:controller => "audits", :action => "newvidre", :id => @audit.id},  :class=>'btn btn-primary btn-block' %>
+
+
+
+C:\xampp\htdocs\trampes>rails generate scaffold Vidre nom:string tipus:string ubicacio:string descripcio:text fotobase:string recompte:integer estat_ok:boolean observacions:text foto:string auditv:references
+
+1.- Auditv
+
+ TIPUS = ["Cristal", "Plastico duro", "Buenas practicas higienicas", "Buenas practicas manejo", "Food Defense", "Estructural/Infraestructura"]
+
+Vidres/PD/BPH/BPM/FD/E-I
+
+d('_')b
+
+
+<% @tipo.each do |tipus_control| %>
+    <% if tipus_control.field_type == "check_box" %>
+        <p> Es un check_box </p>
+    <% end %>
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+========================================================
+
+AUTO TABLA, asi la llamo
+
+Controller 000000000000000000000000000000000000000000000000000000000
+
+@todos = asdasdasdasd
+
+View 000000000000000000000000000000000000000000000000000000000000000
+
+<h5>Test auto taula 2</h5>
+
+<% if @todos.empty? %>
+    <p>Error: Sin datos</p>
+    <% else %>
+
+    <table class="table" border="1">
+      <caption><%= @todos[0].nom %></caption>
+            <thead>
+            <tr>
+
+                <th>Datacontrol</th>
+                <% i = 0 %>
+                <% while i < @todos[0].properties.keys.count %>
+                        <th><%= @todos[0].properties.keys[i] %></th>
+                <% i += 1 %>
+                <% end %>
+
+            </tr>
+            </thead>
+        <tbody>
+
+                  <% @todos.each do |control| %>
+                    <tr>
+                      <td><%= control.datacontrol.strftime('%d-%m-%Y') %></td>
+                      <% control.properties.each do |properties| %>
+                        <td>
+                            <%= properties[1] %>
+                        </td>
+                      <% end %>
+                    </tr>
+                  <% end %>
+
+        </tbody>
+    </table>
+
+<% end %>
+
+
+========================
+
+/* jumbotron */
+
+.jumbotron {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+  color: inherit;
+  background-color: #eee;
+}
+.jumbotron h1,
+.jumbotron .h1 {
+  color: inherit;
+}
+.jumbotron p {
+  margin-bottom: 15px;
+  font-size: 21px;
+  font-weight: 200;
+}
+.jumbotron > hr {
+  border-top-color: #d5d5d5;
+}
+.container .jumbotron,
+.container-fluid .jumbotron {
+  padding-right: 15px;
+  padding-left: 15px;
+  border-radius: 6px;
+}
+.jumbotron .container {
+  max-width: 100%;
+}
+@media screen and (min-width: 768px) {
+  .jumbotron {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+  .container .jumbotron,
+  .container-fluid .jumbotron {
+    padding-right: 60px;
+    padding-left: 60px;
+  }
+  .jumbotron h1,
+  .jumbotron .h1 {
+    font-size: 63px;
+  }
+}
+

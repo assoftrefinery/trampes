@@ -1,0 +1,37 @@
+<h5>Test Parcial</h5>
+
+<% if @todos.empty? %>
+    <p>Error: Sin datos</p>
+<% else %>
+
+    <table class="table" border="1">
+      <caption><%= @todos[0].nom %><b> | Total controls: </b><%= @todos.count %></caption>
+      <thead>
+        <tr>
+
+          <th>Datacontrol</th>
+          <% i = 0 %>
+          <% while i < @todos[0].properties.keys.count %>
+              <th><%= @todos[0].properties.keys[i] %></th>
+              <% i += 1 %>
+          <% end %>
+
+        </tr>
+      </thead>
+      <tbody>
+
+      <% @todos.each do |control| %>
+          <tr>
+            <td><%= control.datacontrol.strftime('%d-%m-%Y') %></td>
+            <% control.properties.each do |properties| %>
+                <td>
+                  <%= properties[1] %>
+                </td>
+            <% end %>
+          </tr>
+      <% end %>
+
+      </tbody>
+    </table>
+
+<% end %>

@@ -1,0 +1,50 @@
+<%= form_for(@auditv) do |f|  %>
+    <% if @auditv.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@auditv.errors.count, "error") %> ha impedit que es gravi correctament:</h2>
+
+          <ul>
+            <% @auditv.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+      <%= f.label :dataaudit %><br>
+      <%= f.date_select :dataaudit %>
+    </div>
+
+    <div class="field">
+      <%= f.label :observacions %><br>
+      <%= f.text_area :observacions %>
+    </div>
+
+    <h2>Vidres/BPM/BPH/FD</h2>
+    <div>
+      <%= f.fields_for :vidres do |builder| %>
+          <%= render 'vidres', f: builder %>
+      <% end %>
+    </div>
+
+    </br>
+
+    <div class="actions">
+      <%= f.submit :class=>'btn btn-primary btn-block' %>
+    </div>
+
+<% end %>
+
+<script type="text/javascript">
+  /*hacer un loop de esto*/
+  $('#audit_trampas_attributes_0_estat_ok').change(function(){$('#audit_trampas_attributes_0_observacions').toggle(250);});
+  $('#audit_trampas_attributes_1_estat_ok').change(function(){$('#audit_trampas_attributes_1_observacions').toggle(250);});
+  $('#audit_trampas_attributes_2_estat_ok').change(function(){$('#audit_trampas_attributes_2_observacions').toggle(250);});
+  $('#audit_trampas_attributes_3_estat_ok').change(function(){$('#audit_trampas_attributes_3_observacions').toggle(250);});
+
+  $('#audit_trampas_attributes_4_estat_ok').change(function(){$('#audit_trampas_attributes_4_observacions').toggle(250);});
+  $('#audit_trampas_attributes_5_estat_ok').change(function(){$('#audit_trampas_attributes_5_observacions').toggle(250);});
+  $('#audit_trampas_attributes_6_estat_ok').change(function(){$('#audit_trampas_attributes_6_observacions').toggle(250);});
+  $('#audit_trampas_attributes_7_estat_ok').change(function(){$('#audit_trampas_attributes_7_observacions').toggle(250);});
+</script>

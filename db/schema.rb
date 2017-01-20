@@ -11,13 +11,53 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160229114601) do
+ActiveRecord::Schema.define(version: 20161121160922) do
 
   create_table "audits", force: :cascade do |t|
     t.date     "dataaudit"
     t.text     "observacions"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+  end
+
+  create_table "auditvs", force: :cascade do |t|
+    t.date     "dataaudit"
+    t.text     "observacions"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  create_table "controls", force: :cascade do |t|
+    t.string   "nom"
+    t.datetime "datacontrol"
+    t.string   "operari"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.integer  "product_type_id"
+    t.text     "properties"
+    t.string   "frecuencia"
+    t.datetime "dataproximcontrol"
+    t.string   "fabricacio"
+  end
+
+  create_table "product_fields", force: :cascade do |t|
+    t.string   "name"
+    t.string   "field_type"
+    t.boolean  "required"
+    t.integer  "product_type_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.boolean  "llistat"
+  end
+
+  add_index "product_fields", ["product_type_id"], name: "index_product_fields_on_product_type_id"
+
+  create_table "product_types", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+    t.string   "frecuencia"
+    t.datetime "dataproximcontrol"
   end
 
   create_table "trampas", force: :cascade do |t|
@@ -31,8 +71,27 @@ ActiveRecord::Schema.define(version: 20160229114601) do
     t.text     "observacions"
     t.string   "ubicacio"
     t.string   "foto"
+    t.text     "descripcio"
+    t.string   "fotobase"
   end
 
   add_index "trampas", ["audit_id"], name: "index_trampas_on_audit_id"
+
+  create_table "vidres", force: :cascade do |t|
+    t.string   "nom"
+    t.string   "tipus"
+    t.string   "ubicacio"
+    t.text     "descripcio"
+    t.string   "fotobase"
+    t.integer  "recompte"
+    t.boolean  "estat_ok"
+    t.text     "observacions"
+    t.string   "foto"
+    t.integer  "auditv_id"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "vidres", ["auditv_id"], name: "index_vidres_on_auditv_id"
 
 end

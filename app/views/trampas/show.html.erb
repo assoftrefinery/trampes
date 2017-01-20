@@ -11,8 +11,18 @@
 </p>
 
 <p>
-  <strong>Ubicacio:</strong>
+  <strong>Ubicació:</strong>
   <%= @trampa.ubicacio %>
+</p>
+
+<p>
+  <strong>Descripció:</strong>
+  <%= @trampa.descripcio %>
+</p>
+
+<p>
+  <strong>Foto Inicial:</strong>
+  <%= image_tag @trampa.fotobase, :style => 'width:175px;height:75px;' %>
 </p>
 
 <p>
@@ -35,10 +45,12 @@
   <%= @trampa.audit %>
 </p>
 -->
+
 <p>
-  <strong>Foto:</strong>
-  <%= image_tag @trampa.foto, :style => 'width:350px;height:350px;' %>
+  <strong>Foto auditoria:</strong>
+  <%= image_tag @trampa.foto, :style => 'width:175px;height:75px;' %>
 </p>
+
 
 
 

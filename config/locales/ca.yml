@@ -154,6 +154,10 @@ ca:
       create: Crear %{model}
       submit: Guardar %{model}
       update: Actualitzar %{model}
+      edit: Actualitzar %{model}
+    producttype:
+      update: Actualitzar %{model}
+      edit: Actualitzar %{model}
   number:
     currency:
       format:
@@ -213,3 +217,20 @@ ca:
       long: "%d de %B de %Y %H:%M"
       short: "%d de %b %H:%M"
     pm: pm
+#kaminari
+  views:
+    pagination:
+      first: "&laquo; Primer"
+      last: "Ultim &raquo;"
+      previous: "&lsaquo; Anterior"
+      next: "Seguent &rsaquo;"
+      truncate: "&hellip;"
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "0 elements trobats"
+          one: "Visualitzar <b>1</b> element"
+          other: "Visualitzant:<b> %{count}</b> elements"
+      more_pages:
+        display_entries: "Visualitzant element <b>%{first}&nbsp;-&nbsp;%{last}</b> de <b>%{total}</b> en total"

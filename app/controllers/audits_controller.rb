@@ -1,10 +1,15 @@
 class AuditsController < ApplicationController
+  #http_basic_authenticate_with name: "joan", password: "tio", except: :index
+
   before_action :set_audit, only: [:show, :edit, :update, :destroy]
 
   # GET /audits
   # GET /audits.json
   def index
-    @audits = Audit.all
+    #pre-kaminari
+    #@audits = Audit.all
+    #post-kaminari
+    @audits = Audit.page(params[:page]).per(10)
 
     #exportacion a CSV
     #respond_to do |format|
@@ -68,16 +73,16 @@ class AuditsController < ApplicationController
   # PATCH/PUT /audits/1
   # PATCH/PUT /audits/1.json
   def update
-    respond_to do |format|
-      #if @audit.update(audit_params)
-      if @audit.update(cabecera_params)
-        format.html { redirect_to @audit, notice: 'Auditoria actualitzada.' }
-        format.json { render :show, status: :ok, location: @audit }
-      else
-        format.html { render :edit }
-        format.json { render json: @audit.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        #if @audit.update(audit_params)
+        if @audit.update(cabecera_params)
+          format.html { redirect_to @audit, notice: 'Auditoria actualitzada.' }
+          format.json { render :show, status: :ok, location: @audit }
+        else
+          format.html { render :edit }
+          format.json { render json: @audit.errors, status: :unprocessable_entity }
+        end
       end
-    end
   end
 
 
@@ -100,7 +105,7 @@ class AuditsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def audit_params
-     params.require(:audit).permit(:id, :dataaudit, :observacions, trampas_attributes: [:nom, :tipus, :recompte, :estat_ok, :observacions, :ubicacio, :foto])
+     params.require(:audit).permit(:id, :dataaudit, :observacions, trampas_attributes: [:nom, :tipus, :recompte, :estat_ok, :observacions, :ubicacio, :foto, :fotobase])
     end
     #intento de editar solo cabecera
     def cabecera_params

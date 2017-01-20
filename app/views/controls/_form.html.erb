@@ -1,0 +1,128 @@
+<%= form_for(@control) do |f| %>
+    <% if @control.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@control.errors.count, "error") %> ha impedit que es guardi aquest Control:</h2>
+
+          <ul>
+            <% @control.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
+
+    <%= f.hidden_field :product_type_id %>
+
+    <!-- hacer que el nom control sea == product_type name -->
+    <% if @nombre.nil? %>
+    <% else %>
+        <% @nombre.each do |tipus_control| %>
+            <% @control.nom = tipus_control.name %>
+        <% end %>
+    <% end %>
+
+    <!-- Asegurar que control.frecuencia sea = que product_type.frecuencia -->
+    <% if @frec.nil? %>
+    <% else %>
+        <% @frec.each do |frec| %>
+            <% @control.frecuencia = frec.frecuencia %>
+        <% end %>
+    <% end %>
+
+    <% case @control.frecuencia
+         when "Setmanal" %><% @control.dataproximcontrol = Time.now + 1.week %>
+    <% when "Mensual"   %><% @control.dataproximcontrol = Time.now + 1.month %>
+    <% when "Anual"     %><% @control.dataproximcontrol = Time.now + 1.year %>
+    <% when "Diaria"    %><% @control.dataproximcontrol = Time.now + 1.day %>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label "Nom Control" %><br>
+      <%= f.text_field :nom, :class => "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label "Data Control" %><br>
+      <%= f.datetime_select :datacontrol, :class=>"form-control" %>
+    </div>
+    <div class="form-group">
+      <%= f.label :operari %><br>
+      <%= f.text_field :operari , :class => "form-control"%>
+    </div>
+
+    <div class="form-group borde-campo">
+      <% if @control.frecuencia.nil? || @control.frecuencia == 'Selecciona frecuencia' %>
+          <b>Freqüència no establerta</b>
+      <% else %>
+          <b>Freqüència:</b> <%= @control.frecuencia %>
+      <% end %>
+    </div>
+
+    <% if @control.dataproximcontrol.nil? %>
+        <div class="form-group borde-campo">
+          <b>Data próxim control: N/A </b>
+        </div>
+    <% else %>
+        <div class="form-group borde-campo">
+          <b>Data próxim control: </b><%= @control.dataproximcontrol.strftime('%d-%m-%Y') %>
+        </div>
+    <% end %>
+
+    <div id="accordion">
+      <!-- <h3>Fabricació: <input style="text-align:center;" type="text" id="testfabtext" name="fname" class="borde-normal" readonly></h3> -->
+      <h3>Fabricació: <%= f.text_field :fabricacio, :id => "fabtext", :class=>"borde-normal",:style=>"text-align:center;", :readonly=>true %></h3>
+      <div>
+        <% if @fabs.nil? %>
+            <p> No fabs </p>
+        <% else %>
+            <table class="table table-condensed" style="text-align:justify;">
+              <thead>
+              <tr>
+                <th align="center"></th>
+                <th align="center"><%= sortable "Empresa" %></th>
+                <th align="center"><%= sortable "Codigo" %></th>
+                <th align="center"><%= sortable "Fecha" %></th>
+                <th align="center"><%= sortable "NombreFabricacion" %></th>
+              </tr>
+              </thead>
+
+              <tbody>
+              <% @fabs.each do |control| %>
+                  <tr>
+                    <td>
+                      <%= link_to 'Seleccionar', {:controller => "controls", :action => "asignar_fabricacion", :id => control.id, :remote => true }, :class=> 'btn btn-primary btn-block' %>
+                    </td>
+                    <td><%= control.NomEmp %></td>
+                    <td><%= control.Codigo %></td>
+                    <td><span class="badge"><%= control.Fecha.strftime('%d-%m-%Y') %> <b>·</b> <%= control.Fecha.strftime('%H:%M') %></span></td>
+                    <td><%= control.NombreFabricacion.encode(Encoding.find('UTF-8'), {invalid: :replace, undef: :replace, replace: ''}) %></td>
+                 <!-- Aqui va nombre fabricacion, revisar error UTF-8 -->
+
+                  </tr>
+              <% end %>
+              </tbody>
+            </table>
+
+        <% end %>
+      </div>
+    </div>
+
+    <hr>
+    <!-- Separamos visualmente cabecera y campos del control -->
+
+    <%= f.fields_for :properties, OpenStruct.new(@control.properties) do |builder| %>
+        <% @control.product_type.fields.each do |field| %>
+            <%= render "controls/fields/#{field.field_type}", field: field, f: builder %>
+        <% end %>
+    <% end %>
+
+    <br>
+
+    <%= f.hidden_field :dataproximcontrol %>
+    <%= f.hidden_field :frecuencia %>
+
+
+    <div class="actions">
+      <%= f.submit ( f.object.new_record? ? "Crear nou Control" : "Actualitzar Control"), :class=>'btn btn-primary btn-block' %>
+    </div>
+
+<% end %>

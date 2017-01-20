@@ -1,0 +1,144 @@
+<script>
+  $.datepicker.regional['ca'] = {
+    closeText: 'Tancar',
+    prevText: '<Ant',
+    nextText: 'Seg>',
+    currentText: 'Avui',
+    monthNames: ['Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'Juny', 'Juliol', 'Agost', 'Setembre', 'Octubre', 'Novembre', 'Decembre'],
+    monthNamesShort: ['Gen','Feb','Mar','Abr', 'Mai','Jun','Jul','Ago','Set', 'Oct','Nov','Dec'],
+    dayNames: ['Diumenge', 'Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte'],
+    dayNamesShort: ['Dg','Dl','Dt','Dc','Dj','Dv','Ds'],
+    dayNamesMin: ['Dg','Dl','Dt','Dc','Dj','Dv','Ds'],
+    weekHeader: 'Sm',
+    /*dateFormat: 'dd/mm/yy',*/
+    dateFormat: 'yy-mm-dd',
+    altField: "#datacon",
+    firstDay: 1,
+    isRTL: false,
+    showMonthAfterYear: false,
+    yearSuffix: ''
+  };
+  $.datepicker.setDefaults($.datepicker.regional['ca']);
+  $(function () {
+    $("#datepicker").datepicker();
+  });
+</script>
+
+<script src="/assets/ap-scroll-top-codigo.js"></script>
+
+<p id="notice"><%= notice %></p>
+
+<h1 class="jumbotron">Històric de Controls</h1>
+
+<% if @controls.empty? %>
+    <p align="center"><strong>No s'han trobat controls</strong></p>
+<% end %>
+
+<!-- nuevo UI busqueda -->
+<br>
+<div class="borde-normal">
+  <table style="/*width:100%;*/">
+    <thead></thead>
+    <th  colspan="5"></th>
+    <tbody>
+    <tr>
+      <%= form_tag controls_path, :method => 'get' do %>
+          <%= hidden_field_tag :direction, params[:direction] %>
+          <%= hidden_field_tag :sort, params[:sort] %>
+
+          <td><p>
+            <%= text_field_tag :search, params[:search], :class=>"form-control" %>
+          </p></td>
+
+          <td><p>Data: <input type="text" id="datepicker"></p></td>
+
+         <td style="display:none;"><p><%= text_field_tag :datacon %></p></td>
+
+          <td> <p>
+            <%= select_tag :search_desplegable, options_from_collection_for_select(ProductType.all.order('created_at desc'), :name, :name), prompt: "-Selecciona tipus a buscar-", :class=>"form-control" %>
+          </p></td>
+
+          <td><p>
+            <%= submit_tag "Buscar", :name => nil, :class=>"form-control btn btn-primary btn-block" %>
+          </p></td>
+
+          <td> <p>
+            <%= link_to "Reset", '#', onclick: 'document.getElementById("search").value="";document.getElementById("search_desplegable").value=""; return false;', class: "form-control btn btn-warning btn-block" %>
+          </p></td>
+      <% end %>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<!-- fin nuevo UI busqueda -->
+
+<br>
+
+<div>
+  <%= link_to 'Plànning de Controls', 'controls/planning/', :class=>'btn btn-primary btn-block' %>
+</div>
+
+<script>
+  function borrarTexto() {document.getElementById("search").value="";}
+</script>
+
+<br>
+
+<h4>Seleccionar tipus de control per crear:</h4>
+<%= form_tag new_control_path, method: :get do %>
+    <div class="form-group"> <%= select_tag :product_type_id, options_from_collection_for_select(ProductType.all.order('created_at desc'), :id, :name), :class=>"form-control" %> </div>
+    <%= submit_tag "Nou Control", name: nil, :class=>'btn btn-primary btn-block' %>
+<% end %>
+<br>
+<%= link_to 'Gestionar Tipus de Controls', product_types_path, :class=>'btn btn-primary btn-block' %>
+<br>
+<br>
+<%= link_to 'Enrera', home_menu_qualitat_path, :class=>'btn btn-primary btn-block' %>
+
+<br>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+    <!--   <th><%= sortable "id" %></th> -->
+      <th><%= sortable "nom" %></th>
+      <th><%= sortable "datacontrol","Data Control" %></th>
+      <th><%= sortable "operari" %></th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @controls.each do |control| %>
+      <tr>
+     <!--    <td><%= control.product_type_id %></td> -->
+        <td><%= control.nom %></td>
+        <td><%= control.datacontrol.strftime('%d-%m-%Y') %> / <%= control.datacontrol.strftime('%H:%M')%></td>
+        <td><%= control.operari %></td>
+        <td><%= link_to 'Veure', control, :class=>'btn btn-primary btn-block' %></td>
+        <td><%= link_to 'Editar', edit_control_path(control), :class=>'btn btn-warning btn-block' %></td>
+        <td><%= link_to 'Esborrar', control, method: :delete, data: { confirm: 'Esborrar Control i totes les dades associades. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<!-- ubicacion original Select tipo control -->
+<br>
+<table style="margin-left:auto;margin-right:auto;">
+  <tr>
+    <td>
+      <a href="#" onclick="window.print();return false;">Imprimir</a> /
+    </td>
+    <td>
+      <%= link_to "Exportar CSV", controls_exportar_path(format: "csv") %> /
+    </td>
+
+    <td>
+      <%= link_to "Exportar CSV TEST", controls_exportar_path(format:"csv") %>
+    </td>
+  </tr>
+</table>
+<br>
+
+<%= paginate @controls %>
+<%= page_entries_info @controls %>

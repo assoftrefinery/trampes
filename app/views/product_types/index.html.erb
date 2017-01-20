@@ -1,0 +1,34 @@
+<script src="/assets/ap-scroll-top-codigo.js"></script>
+
+<p id="notice"><%= notice %></p>
+
+<h1 class="jumbotron">Tipus de Controls</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @product_types.each do |product_type| %>
+      <tr>
+        <td><%= product_type.name %></td>
+        <td><%= link_to 'Veure', product_type, :class=>'btn btn-primary btn-block' %></td>
+        <td><%= link_to 'Editar', edit_product_type_path(product_type), :class=>'btn btn-warning btn-block' %></td>
+        <td><%= link_to 'Esborrar', product_type, method: :delete, data: { confirm: 'Esborrar Tipus de Control. Estas segur?' }, :class=>'btn btn-danger btn-block' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+<%= link_to 'Crear nou Tipus de Control', new_product_type_path, :class=>'btn btn-primary btn-block' %>
+<br>
+<%= link_to 'Tornar a Controls', controls_path, :class=>'btn btn-primary btn-block' %>
+<br>
+<%= paginate @product_types %>
+<%= page_entries_info @product_types %>
+
+

@@ -1,0 +1,40 @@
+<%= form_for(@control) do |f| %>
+
+<table>
+  <thead>
+    <tr>
+        <td>    </td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>      </td>
+    </tr>
+  </tbody>
+</table>
+
+  <div class="field">
+    <%= f.label "Nom Control" %><br>
+    <%= f.text_field :nom %>
+  </div>
+  <div class="field">
+    <%= f.label "Data Control" %><br>
+    <%= f.datetime_select :datacontrol, :class=>"form-control" %>
+  </div>
+  <div class="field">
+    <%= f.label :operari %><br>
+    <%= f.text_field :operari %>
+  </div>
+
+    <hr>
+    <!-- Separamos visualmente cabecera y campos del control -->
+
+    <%= f.fields_for :properties, OpenStruct.new(@control.properties) do |builder| %>
+        <% @control.product_type.fields.each do |field| %>
+            <%= render "controls/fields/#{field.field_type}", field: field, f: builder %>
+        <% end %>
+    <% end %>
+
+    <br>
+
+<% end %>
